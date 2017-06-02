@@ -1,0 +1,58 @@
+{
+  "name": "civicdr-backend",
+  "version": "0.0.1",
+  "description": "Backend for CiviCDR",
+  "main": "index.js",
+  "repository": "git@github.com:ASL-19/civicdr-backend.git",
+  "author": "CiviCDR",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run web",
+    "web": "node index.js",
+    "clock": "node clock.js",
+    "lint": "eslint .",
+    "test-script": "npm run lint && NODE_ENV=test nyc ava -c 10 test/**",
+    "test": "npm run setup && npm run test-script ; npm run teardown",
+    "setup": ".scripts/create_database.sh && .scripts/setup_database.sh test",
+    "teardown": ".scripts/drop_database.sh",
+    "ci-setup": ".scripts/setup_database.sh circle"
+  },
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "eslint": "^3.17.1",
+    "eslint-config-prettier": "^1.5.0",
+    "eslint-plugin-prettier": "^2.0.1",
+    "nyc": "^10.1.2",
+    "openpgp": "^2.5.4",
+    "prettier": "^0.22.0",
+    "supertest": "^3.0.0",
+    "tap-xunit": "^1.7.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
+    "cors": "^2.8.1",
+    "defined": "^1.0.0",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.2",
+    "express-boom": "^2.0.0",
+    "express-jwt": "^5.1.0",
+    "faker": "^4.1.0",
+    "has": "^1.0.1",
+    "knex": "^0.12.7",
+    "mailgun-js": "^0.10.1",
+    "minimist": "^1.2.0",
+    "moment": "^2.17.1",
+    "morgan": "^1.8.1",
+    "node-uuid": "^1.4.8",
+    "pg": "^6.1.3",
+    "ramda": "^0.23.0",
+    "tap-pessimist": "^1.0.1",
+    "winston": "^2.3.1",
+    "winston-daily-rotate-file": "^1.4.6",
+    "xtend": "^4.0.1"
+  },
+  "engines": {
+    "node": "7.6.0"
+  }
+}

@@ -1,0 +1,21 @@
+machine:
+  node:
+    version: 7.6
+  environment:
+    NODE_ENV: circle
+    MAILGUN_KEY: foo
+    MAILGUN_DOMAIN: bar
+dependencies:
+  override:
+    - yarn
+database:
+  override:
+    - yarn run ci-setup
+test:
+  override:
+    - mkdir -p $CIRCLE_TEST_REPORTS/reports
+    - yarn run lint
+    - node_modules/.bin/nyc --reporter=lcov node_modules/.bin/ava -c 10 --tap test/** | node_modules/.bin/tap-xunit > $CIRCLE_TEST_REPORTS/reports/ava.xml
+general:
+  artifacts:
+    - ./coverage
