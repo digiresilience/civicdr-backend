@@ -38,3 +38,8 @@ To send mail regularly, set up a cron job to run the script on a schedule. For e
 # cd into the app directory and run the clock process
 */10 * * * * civicdr cd /home/civicdr && yarn run clock<Paste>
 ```
+
+### Running on Heroku
+
+- After creating an application on Heroku and associating the Github repository, the default `npm start` will run the server (make sure to create the environment variables for the app)
+- The [Heroku Scheduler](https://devcenter.heroku.com/articles/scheduler) can be used to run the mailer for notifications using the same commands as above.

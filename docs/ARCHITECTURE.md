@@ -8,6 +8,9 @@ The system is composed of:
  - Postgres Database for storage
  - Authentication and authorization using JSON Web Tokens
 
+### 📦 Database
+![Database Model](schema.png)
+
 ### 🙅 Authentication
 
 Authentication with the API is done by sending an `Authorization` header containing a valid [JWT](https://jwt.io). The API checks the JWT signature using the environment variable `JWT_SECRET`. For more information, you can read the documentation of [express-jwt](https://github.com/auth0/express-jwt).
