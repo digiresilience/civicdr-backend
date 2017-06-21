@@ -70,6 +70,7 @@ module.exports = conn => {
           let id = await IpProfile.create(data);
           res.status(200).json(id);
         } else if (role === 'sp') {
+          data.rating = data.rating || 0;
           let id = await SpProfile.create(data);
           res.status(200).json(id);
         } else {
