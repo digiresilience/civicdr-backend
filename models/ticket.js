@@ -44,6 +44,7 @@ module.exports = conn => {
       await trx('threads').where('ticket_id', id).delete();
       await trx('tickets_groupings').where('ticket_id', id).delete();
       await trx('tickets').where('id', id).delete();
+      await trx('reads').where('ticket_id', id).delete();
       return id;
     });
   }
