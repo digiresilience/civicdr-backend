@@ -3,11 +3,14 @@ const { RecordNotFound, NotNullViolation } = require('../../errors');
 const has = require('has');
 const R = require('ramda');
 
-module.exports = (IpProfile, userAllowedReadKeys, Email) => {
+module.exports = (IpProfile, userAllowedKeys, Email) => {
   return {
     createIpProfile: async (req, res) => {
       /* TODO: validate input */
       let data = req.body;
+      if (req.user.role === 'ip') {
+        data = R.pick(userAllowedKeys, data);
+      }
 
       /* Save data to  db */
       try {
@@ -31,7 +34,7 @@ module.exports = (IpProfile, userAllowedReadKeys, Email) => {
       let [ipProfile] = await IpProfile.findById(id);
       if (defined(ipProfile)) {
         if (req.user.role === 'ip') {
-          ipProfile = R.pick(userAllowedReadKeys, ipProfile);
+          ipProfile = R.pick(userAllowedKeys, ipProfile);
         }
         res.status(200).json(ipProfile);
       } else {
@@ -65,6 +68,9 @@ module.exports = (IpProfile, userAllowedReadKeys, Email) => {
     updateIpProfile: async (req, res) => {
       /* TODO: validate input */
       let data = req.body;
+      if (req.user.role === 'ip') {
+        data = R.pick(userAllowedKeys, data);
+      }
 
       let id = req.params.id;
 
