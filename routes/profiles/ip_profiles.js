@@ -42,24 +42,6 @@ module.exports = (IpProfile, userAllowedKeys, Email) => {
       }
     },
 
-    getIpProfileKey: async (req, res) => {
-      /* TODO: validate input */
-      let id = req.params.id;
-
-      try {
-        let [ipProfile] = await IpProfile.findById(id);
-        if (defined(ipProfile) && has(ipProfile, 'pgp_key')) {
-          res.setHeader('Content-type', 'text/plain');
-          res.status(200).send(`${ipProfile.pgp_key}`);
-        } else {
-          res.boom.notFound('That profile does not exist');
-        }
-      } catch (e) {
-        logger.error(e);
-        res.boom.badImplementation('server error!');
-      }
-    },
-
     getIpProfiles: async (req, res) => {
       let ipProfiles = await IpProfile.find();
       res.status(200).json(ipProfiles);
