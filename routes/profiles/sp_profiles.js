@@ -42,24 +42,6 @@ module.exports = (SpProfile, userAllowedKeys, Email) => {
       }
     },
 
-    getSpProfileKey: async (req, res) => {
-      /* TODO: validate input */
-      let id = req.params.id;
-
-      try {
-        let [spProfile] = await SpProfile.findById(id);
-        if (defined(spProfile) && has(spProfile, 'pgp_key')) {
-          res.setHeader('Content-type', 'text/plain');
-          res.status(200).send(`${spProfile.pgp_key}`);
-        } else {
-          res.boom.notFound('That profile does not exist');
-        }
-      } catch (e) {
-        logger.error(e);
-        res.boom.badImplementation('server error!');
-      }
-    },
-
     getSpProfiles: async (req, res) => {
       let spProfiles = await SpProfile.find();
       res.status(200).json(spProfiles);
