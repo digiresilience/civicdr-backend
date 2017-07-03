@@ -65,12 +65,9 @@ module.exports.init = function(opts) {
   /* Permissions middleware */
   const check = require('./permissions')(client, logger);
 
-  /* Public Routes for pgp_key */
   const profiles = require('./routes/profiles')(client);
-  app.get('/ip_profiles/:id/key', check('public'), profiles.getIpProfileKey);
-  app.get('/sp_profiles/:id/key', check('public'), profiles.getSpProfileKey);
 
-  /* All other routes requires a token*/
+  /* All routes require a token*/
   app.use(jwt({ secret: process.env.JWT_SECRET || opts.secret }));
   app.use(function(err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
