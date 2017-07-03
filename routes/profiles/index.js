@@ -4,7 +4,7 @@ const withError = require('../../utils/with-error');
 const xtend = require('xtend');
 const { RecordNotFound, NotNullViolation } = require('../../errors');
 
-const spAllowedReadKeys = [
+const spAllowedKeys = [
   'id',
   'name',
   'services',
@@ -19,7 +19,7 @@ const spAllowedReadKeys = [
   'email_notification'
 ];
 
-const ipAllowedReadKeys = [
+const ipAllowedKeys = [
   'id',
   'name',
   'contact',
@@ -44,12 +44,12 @@ module.exports = conn => {
   // Routes
   const IpProfileRoutes = require('./ip_profiles')(
     IpProfile,
-    ipAllowedReadKeys,
+    ipAllowedKeys,
     Email
   );
   const SpProfileRoutes = require('./sp_profiles')(
     SpProfile,
-    spAllowedReadKeys,
+    spAllowedKeys,
     Email
   );
 
@@ -92,11 +92,11 @@ module.exports = conn => {
         return res.boom.notFound();
       } else {
         if (req.user.role === 'ip') {
-          profile = R.pick(ipAllowedReadKeys, profile);
+          profile = R.pick(ipAllowedKeys, profile);
         }
 
         if (req.user.role === 'sp') {
-          profile = R.pick(spAllowedReadKeys, profile);
+          profile = R.pick(spAllowedKeys, profile);
         }
 
         res.status(200).json(profile);
