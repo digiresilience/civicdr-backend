@@ -34,7 +34,6 @@ module.exports = conn => {
     'id',
     'openid',
     'name',
-    'location',
     'contact',
     'location',
     'secure_channels',
