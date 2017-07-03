@@ -4,11 +4,14 @@ const has = require('has');
 
 const R = require('ramda');
 
-module.exports = (SpProfile, userAllowedReadKeys, Email) => {
+module.exports = (SpProfile, userAllowedKeys, Email) => {
   return {
     createSpProfile: async (req, res) => {
       /* TODO: validate input */
       let data = req.body;
+      if (req.user.role === 'sp') {
+        data = R.pick(userAllowedKeys, data);
+      }
 
       /* Save data to  db */
       try {
@@ -31,7 +34,7 @@ module.exports = (SpProfile, userAllowedReadKeys, Email) => {
       let [spProfile] = await SpProfile.findById(id);
       if (defined(spProfile)) {
         if (req.user.role === 'sp') {
-          spProfile = R.pick(userAllowedReadKeys, spProfile);
+          spProfile = R.pick(userAllowedKeys, spProfile);
         }
         res.status(200).json(spProfile);
       } else {
@@ -65,6 +68,9 @@ module.exports = (SpProfile, userAllowedReadKeys, Email) => {
     updateSpProfile: async (req, res) => {
       /* TODO: validate input */
       let data = req.body;
+      if (req.user.role === 'sp') {
+        data = R.pick(userAllowedKeys, data);
+      }
 
       let id = req.params.id;
 
