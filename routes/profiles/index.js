@@ -57,13 +57,20 @@ module.exports = conn => {
     createProfile: async (req, res) => {
       let role = req.user.role;
 
+      // Only allow a user to create their profile once
+      const openid = req.user.sub;
+      let profile;
+      if (role === 'ip') {
+        [profile] = await IpProfile.findByOpenId(openid);
+      } else if (role === 'sp') {
+        [profile] = await SpProfile.findByOpenId(openid);
+      }
+      if (profile) {
+        return res.boom.badRequest('Profile already exists');
+      }
+
       /* TODO: validate input */
-      let data = xtend(
-        {
-          openid: req.user.sub
-        },
-        req.body
-      );
+      let data = xtend({ openid }, req.body);
 
       try {
         if (role === 'ip') {
