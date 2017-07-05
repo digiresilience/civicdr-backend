@@ -64,6 +64,20 @@ test('POST /sp_profiles - create a new SP profile', async t => {
   );
 });
 
+test('POST /sp_profiles - created SP user cannot make another profile', async t => {
+  // Use the token of an existing SP, whose Open ID is already in the database
+  const user = { roles: ['SP'], sub: 'auth0|sp' };
+  const spToken = jwt.sign(user, 'secret');
+  const [profile] = await t.context.SpProfile.findByOpenId(user.sub);
+
+  const res = await request(t.context.app)
+    .post('/profile')
+    .send(profile)
+    .set('Accept', 'application/json')
+    .set('Authorization', `Bearer ${spToken}`);
+  t.is(res.status, 400);
+});
+
 test('GET /sp_profiles/:id - get an existing SP profile', async t => {
   const [{ id }] = await t.context
     .conn('sp_profiles')
