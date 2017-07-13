@@ -2,7 +2,7 @@
 
 ## Dependencies
 
-- Node 7.9+
+- Node 7.10.1+
 - Postgres 9.4+ for database
 - Yarn Package Manager
 
