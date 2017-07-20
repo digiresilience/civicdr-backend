@@ -43,8 +43,11 @@ module.exports = (client, opts) => {
   }
 
   // Mark as sent in emails table
-  async function markAsSent(id) {
-    return await client('emails').where('id', id).update('sent', true);
+    async function markAsSent(emailGroup) {
+      var idList = emailGroup.map(function(obj) {
+        return obj.id
+      });
+    return await client('emails').whereIn('id', idList).update('sent', true);
   }
 
   // Send email

@@ -10,6 +10,8 @@ You should have a `.env` file that contains the following environment variables:
 -  `MAILGUN_EMAIL` : Mailgun "from" address for notifications
 -  `ADMIN_EMAIL` : Email address for admin notifications
 -  `JWT_SECRET` : The secret token used to validate requests from clients. [More information](ARCHITECTURE.md#-authentication)
+- `HEROKU_APP_LOG_LEVEL` : The log level for heroku streaming logs.
+- `LOG_DIRECTORY` : Log files are written to the directory defined here.
 
 ```
 # Copy over the .env file and set the environment variables

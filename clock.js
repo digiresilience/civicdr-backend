@@ -2,7 +2,7 @@
 require('dotenv').config();
 
 /* Initialize db */
-const client = require('../db');
+const client = require('./db');
 
 /* Configure logger */
 const logger = require('./utils/logger')('mailer');
@@ -20,12 +20,17 @@ const mailer = require('./utils/mailer')(client, {
 // default is last 24 hours, otherwise use the supplied parameters
 let startTime = moment().subtract(24, 'hours');
 let endTime = moment();
+
 if (process.argv.length > 2) {
   startTime = moment(process.argv[2]);
 }
 if (process.argv.length > 3) {
   endTime = moment(process.argv[3]);
 }
+
+// Set moments to iso format
+startTime = startTime.toISOString()
+endTime = endTime.toISOString()
 
 mailer
   .getEmails(startTime, endTime)
@@ -39,7 +44,7 @@ mailer
         try {
           const emailData = mailer.createEmailData(emailGroup);
           await mailer.sendEmail(emailData);
-          return await mailer.markAsSent(email.id);
+          return await mailer.markAsSent(emailGroup);
         } catch (e) {
           console.error(e);
           return null;

@@ -2,6 +2,7 @@ const winston = require('winston');
 require('winston-daily-rotate-file');
 const path = require('path');
 const directory = process.env.LOG_DIRECTORY || '.';
+const consoleLogLevel = process.env.HEROKU_APP_LOG_LEVEL || 'error';
 
 module.exports = processName => {
   return new winston.Logger({
@@ -23,6 +24,13 @@ module.exports = processName => {
         datePattern: 'yyyy-MM-dd',
         prepend: true,
         name: 'error'
+      }),
+      new winston.transports.Console({
+        level: consoleLogLevel,
+        timestamp: false,
+        json: false,
+        colorize: false,
+        label: processName
       })
     ]
   });
