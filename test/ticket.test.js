@@ -89,6 +89,39 @@ test('POST /tickets - create a new ticket', async t => {
   );
 });
 
+test('POST /tickets - create a new ticket with no contact info', async t => {
+  const [{ id: profile_id, name, contact }] = await t.context
+        .conn('ip_profiles')
+        .returning('id', 'name', 'contact')
+        .limit(1);
+
+  let ticketData = {
+    status: 'ready',
+    description: 'bad things',
+    date_of_incident: moment(),
+    steps_taken: 'tried everything',
+    ip_assigned_id: profile_id,
+    incident_type: []
+  };
+
+  const res = await request(t.context.app)
+        .post('/tickets')
+        .send(ticketData)
+        .set('Accept', 'application/json')
+        .set('Authorization', `Bearer ${t.context.admin_token}`);
+
+  t.is(res.status, 200);
+
+  // Returns a uuid
+  let [id] = res.body;
+
+  // Ticket contact info pulled from ip profile
+  let [ticket] = await t.context.Ticket.findById(id);
+  t.is(ticket.ticket_ip_name, name);
+  t.is(ticket.ticket_ip_contact, contact);
+});
+
+
 test('POST /tickets - IP create a new ticket', async t => {
   let user = { roles: ['IP'], sub: 'auth0|ip' };
   let token = jwt.sign(user, 'secret');

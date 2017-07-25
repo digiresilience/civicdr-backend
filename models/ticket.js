@@ -40,6 +40,7 @@ module.exports = conn => {
       throw new RecordNotFound('ticket not found');
     }
     return await conn.transaction(async trx => {
+      await trx('reads').where('ticket_id', id).delete();
       await Thread.deleteMessagesForTicket(trx, id);
       await trx('threads').where('ticket_id', id).delete();
       await trx('tickets_groupings').where('ticket_id', id).delete();

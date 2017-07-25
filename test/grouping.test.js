@@ -24,7 +24,7 @@ test.afterEach.always(t => {
 
 test('POST /groupings - create with insufficient fields', async t => {
   let groupingData = {
-    title: 'new'
+    description: 'new'
   };
 
   const res = await request(t.context.app)

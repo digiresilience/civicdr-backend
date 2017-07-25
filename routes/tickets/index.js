@@ -6,11 +6,11 @@ const withError = require('../../utils/with-error');
 module.exports = conn => {
   const Ticket = require('../../models/ticket.js')(conn);
   const Email = require('../../models/email.js')(conn);
-  const IpProfile = require('../../models/ip_profile.js')(conn);
+  const IpProfile = require('../../models/ip_profile')(conn);
   const SpProfile = require('../../models/sp_profile')(conn);
 
   let routes = {
-    createTicket: require('./create-ticket')(Ticket),
+    createTicket: require('./create-ticket')(Ticket, Email, IpProfile),
     getTicket: require('./read-ticket')(Ticket),
     getTickets: require('./read-tickets')(Ticket),
     updateTicket: require('./update-ticket')(Ticket, Email),

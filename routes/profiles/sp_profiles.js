@@ -61,7 +61,7 @@ module.exports = (SpProfile, userAllowedKeys, Email) => {
         await SpProfile.update(id, data, req.user);
 
         // notify admin on updates
-        await Email.notifyAdmin();
+        await Email.notifyAdmin('SPProfileUpdate');
         res.status(200).send('Success');
       } catch (e) {
         if (e instanceof RecordNotFound) {

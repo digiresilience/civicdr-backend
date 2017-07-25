@@ -8,13 +8,14 @@ module.exports = conn => {
   const IpProfile = require('./ip_profile')(conn);
   const SpProfile = require('./sp_profile')(conn);
 
-  async function add(email) {
+  async function add(email, context) {
     return await conn('emails')
       .insert({
         email,
         created_at: conn.fn.now(),
         updated_at: conn.fn.now(),
-        sent: false
+        sent: false,
+        context: context
       })
       .returning('id');
   }
@@ -23,23 +24,23 @@ module.exports = conn => {
     // helper function for adding rows to 'emails' table
     _add: add,
 
-    notify: async (email, profile_id, type) => {
+    notify: async (email, profile_id, type, context) => {
       if (type === 'ip') {
         let [ip_profile] = await IpProfile.findById(profile_id);
         if (ip_profile && ip_profile.email_notification) {
-          await add(email);
+          await add(email, context);
         }
       } else if (type === 'sp') {
         let [sp_profile] = await SpProfile.findById(profile_id);
         if (sp_profile && sp_profile.email_notification) {
-          await add(email);
+          await add(email, context);
         }
       }
     },
 
-    notifyAdmin: async () => {
+    notifyAdmin: async context => {
       // null email addresses are sent to admin
-      await add(null);
+      await add(null, context);
     },
 
     delete: async id => {

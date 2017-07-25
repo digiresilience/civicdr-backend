@@ -42,15 +42,20 @@ module.exports = (Ticket, Email) => {
           await Email.notify(
             ticket.ticket_ip_contact,
             ticket.ip_assigned_id,
-            'ip'
+            'ip',
+            "UpdatedTicket"
           );
         }
         if (ticket.ticket_sp_contact && req.user.role !== 'sp') {
           await Email.notify(
             ticket.ticket_sp_contact,
             ticket.sp_assigned_id,
-            'sp'
+            'sp',
+            'UpdatedTicket'
           );
+        }
+        if (req.user.role !== 'admin') {
+          await Email.notifyAdmin('UpdatedTicket');
         }
       }
 

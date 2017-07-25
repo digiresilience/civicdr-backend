@@ -15,7 +15,7 @@ test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/reports
     - yarn run lint
-    - node_modules/.bin/nyc --reporter=lcov node_modules/.bin/ava -c 10 --tap test/** | node_modules/.bin/tap-xunit > $CIRCLE_TEST_REPORTS/reports/ava.xml
+    - node_modules/.bin/nyc --reporter=lcov node_modules/.bin/ava --no-color -c 10 --tap test/** | node_modules/.bin/tap-xunit > $CIRCLE_TEST_REPORTS/reports/ava.xml
 general:
   artifacts:
     - ./coverage

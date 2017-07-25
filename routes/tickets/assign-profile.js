@@ -13,7 +13,7 @@ module.exports = (Ticket, Email, SpProfile) => {
       // the ticket_sp_contact
       let [sp_profile] = await SpProfile.findById(profile_id);
       if (sp_profile.contact) {
-        await Email.notify(sp_profile.contact, profile_id, 'sp');
+        await Email.notify(sp_profile.contact, profile_id, 'sp', 'SPAssigned');
       }
 
       // acknowledge the ticket has been read

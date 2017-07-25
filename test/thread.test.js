@@ -96,6 +96,45 @@ test('GET /tickets/:ticket_id/threads - get threads for a ticket', async t => {
   );
 });
 
+
+test("GET /tickets/:ticket_id/threads - don't return inactive", async t => {
+  const [thread] = await t.context
+        .conn('threads')
+        .select()
+        .whereNotNull('ticket_id')
+        .where('type', 'sp')
+        .limit(1);
+  const { ticket_id, participant } = thread;
+
+  // Confirm that the admin reads three threads with an assigned SP
+  const resBeforeUnassign = await request(t.context.app)
+        .get(`/tickets/${ticket_id}/threads`)
+        .set('Authorization', `Bearer ${t.context.admin_token}`);
+
+  t.is(resBeforeUnassign.status, 200);
+  t.true(
+    Array.isArray(resBeforeUnassign.body) &&
+      resBeforeUnassign.body.length === 3 &&
+      resBeforeUnassign.body.every(t => t.status === 'active')
+  );
+
+  // Unassign SP and confirm that the admin reads two threads,
+  // since they shouldn't receive the `inactive` thread
+  await t.context.Ticket.unassignSpProfile(ticket_id, participant);
+
+  const resAfterUnassign = await request(t.context.app)
+        .get(`/tickets/${ticket_id}/threads`)
+        .set('Authorization', `Bearer ${t.context.admin_token}`);
+
+  t.is(resAfterUnassign.status, 200);
+  t.true(
+    Array.isArray(resAfterUnassign.body) &&
+      resAfterUnassign.body.length === 2 &&
+      resAfterUnassign.body.every(t => t.status === 'active')
+  );
+});
+
+
 test('GET /groupings/:grouping_id/threads - get threads for a grouping', async t => {
   const [{ grouping_id }] = await t.context
     .conn('threads')

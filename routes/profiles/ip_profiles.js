@@ -61,7 +61,7 @@ module.exports = (IpProfile, userAllowedKeys, Email) => {
         await IpProfile.update(id, data, req.user);
 
         // notify admin on updates
-        await Email.notifyAdmin();
+        await Email.notifyAdmin('IPProfileUpdate');
         res.status(200).send('Success');
       } catch (e) {
         if (e instanceof RecordNotFound) {
