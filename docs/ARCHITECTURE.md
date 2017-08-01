@@ -49,6 +49,7 @@ Pending email transactions are created for the following actions:
   - New comments in a thread
   - Assigned to a ticket
 - Admin
+  - When a new ticket is created
   - Updates to IP/SP Profiles
 
 These pending transactions are stored in the DB table `emails`. On a schedule, we run `clock.js` which creates one email per unique address in the pending records. These emails are queued and sent via [Mailgun](https://www.mailgun.com/).
