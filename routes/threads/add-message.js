@@ -19,28 +19,30 @@ module.exports = (Thread, Ticket, Email) => {
       let [thread] = await Thread.findById(id);
       let [ticket] = await Ticket.findById(thread.ticket_id);
       // IP Message Thread Notifications
-      if (
-        ticket &&
-        ticket.ticket_ip_contact &&
-        thread.type === 'ip'
-      ) {
+      if (ticket && ticket.ticket_ip_contact && thread.type === 'ip') {
         // Notify IP when admin sends a message
         if (req.user.role === 'admin') {
-          await Email.notify(ticket.ticket_ip_contact, thread.participant, 'ip', 'message');
+          await Email.notify(
+            ticket.ticket_ip_contact,
+            thread.participant,
+            'ip',
+            'message'
+          );
           // Notify Admin when IP sends a message
         } else if (req.user.role === 'ip') {
           await Email.notifyAdmin('message');
         }
       }
       // SP Message Thread Notifications
-      if (
-        ticket &&
-        ticket.ticket_sp_contact &&
-        thread.type === 'sp'
-      ) {
+      if (ticket && ticket.ticket_sp_contact && thread.type === 'sp') {
         // Notify SP when admin sends a message
         if (req.user.role === 'admin') {
-          await Email.notify(ticket.ticket_sp_contact, thread.participant, 'sp', 'message');
+          await Email.notify(
+            ticket.ticket_sp_contact,
+            thread.participant,
+            'sp',
+            'message'
+          );
           // Notify Admin when SP sends a message
         } else if (req.user.role === 'sp') {
           await Email.notifyAdmin('message');

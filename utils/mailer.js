@@ -34,30 +34,30 @@ module.exports = (client, opts) => {
       },
       UpdatedTicket: {
         singular: 'One of your tickets was updated.',
-        plural: 'NUM of your tickets were updated.',
+        plural: 'NUM of your tickets were updated.'
       },
       newTicket: {
         singular: 'A new ticket was created.',
-        plural: 'NUM new tickets were created.',
+        plural: 'NUM new tickets were created.'
       },
       SPAssigned: {
         singular: 'You were assigned to a ticket.',
-        plural: 'You were assigned to NUM tickets.',
+        plural: 'You were assigned to NUM tickets.'
       },
-      IPProfileUpdate:{
+      IPProfileUpdate: {
         singular: 'An IP profile was updated.',
-        plural:'NUM IP profiles were updated.'
+        plural: 'NUM IP profiles were updated.'
       },
       SPProfileUpdate: {
         singular: 'An SP profile was updated.',
         plural: 'NUM SP profiles were updated.'
       }
-    }
+    };
     // Get a sorted list of all contexts in the group
     // Reduce so I don't grab any null contexts
     let contextList = emailGroup.reduce(function(clist, obj) {
       if (obj.context) {
-        clist.push(obj.context)
+        clist.push(obj.context);
       }
       return clist.sort();
     }, []);
@@ -65,12 +65,14 @@ module.exports = (client, opts) => {
     let contextStrings = [];
     let current = null;
     let contextCount = 0;
-    contextList.forEach(function(item){
+    contextList.forEach(function(item) {
       if (item != current && current != null) {
         // We have found multiple of this type of context use the plural string
         if (contextCount > 1) {
-          contextStrings.push(messageText[current]['plural'].replace('NUM', contextCount));
-        // We have found one of this type of context use the singular
+          contextStrings.push(
+            messageText[current]['plural'].replace('NUM', contextCount)
+          );
+          // We have found one of this type of context use the singular
         } else if (contextCount == 1) {
           contextStrings.push(messageText[current]['singular']);
         }
@@ -83,8 +85,10 @@ module.exports = (client, opts) => {
     // Catch the last item in the loop
     // We have found multiple of this type of context use the plural string
     if (contextCount > 1) {
-      contextStrings.push(messageText[current]['plural'].replace('NUM', contextCount));
-    // We have found one of this type of context use the singular
+      contextStrings.push(
+        messageText[current]['plural'].replace('NUM', contextCount)
+      );
+      // We have found one of this type of context use the singular
     } else if (contextCount == 1) {
       contextStrings.push(messageText[current]['singular']);
     }
@@ -109,7 +113,7 @@ module.exports = (client, opts) => {
     }
     // Add all the events that occured to the email
     let emailMessages = getEmailMessage(emailGroup);
-    emailMessages.forEach(function(msg){
+    emailMessages.forEach(function(msg) {
       text += '\n - ' + msg;
     });
     // Add sign off.
@@ -124,10 +128,10 @@ module.exports = (client, opts) => {
   }
 
   // Mark as sent in emails table
-    async function markAsSent(emailGroup) {
-      var idList = emailGroup.map(function(obj) {
-        return obj.id
-      });
+  async function markAsSent(emailGroup) {
+    var idList = emailGroup.map(function(obj) {
+      return obj.id;
+    });
     return await client('emails').whereIn('id', idList).update('sent', true);
   }
 

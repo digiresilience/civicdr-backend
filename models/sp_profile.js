@@ -17,6 +17,7 @@ module.exports = conn => {
     return conn('tickets')
       .select(
         'id',
+        'title',
         'status',
         'ticket_ip_contact',
         'ticket_ip_name',

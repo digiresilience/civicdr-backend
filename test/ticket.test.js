@@ -91,9 +91,9 @@ test('POST /tickets - create a new ticket', async t => {
 
 test('POST /tickets - create a new ticket with no contact info', async t => {
   const [{ id: profile_id, name, contact }] = await t.context
-        .conn('ip_profiles')
-        .returning('id', 'name', 'contact')
-        .limit(1);
+    .conn('ip_profiles')
+    .returning('id', 'name', 'contact')
+    .limit(1);
 
   let ticketData = {
     status: 'ready',
@@ -105,10 +105,10 @@ test('POST /tickets - create a new ticket with no contact info', async t => {
   };
 
   const res = await request(t.context.app)
-        .post('/tickets')
-        .send(ticketData)
-        .set('Accept', 'application/json')
-        .set('Authorization', `Bearer ${t.context.admin_token}`);
+    .post('/tickets')
+    .send(ticketData)
+    .set('Accept', 'application/json')
+    .set('Authorization', `Bearer ${t.context.admin_token}`);
 
   t.is(res.status, 200);
 
@@ -120,7 +120,6 @@ test('POST /tickets - create a new ticket with no contact info', async t => {
   t.is(ticket.ticket_ip_name, name);
   t.is(ticket.ticket_ip_contact, contact);
 });
-
 
 test('POST /tickets - IP create a new ticket', async t => {
   let user = { roles: ['IP'], sub: 'auth0|ip' };

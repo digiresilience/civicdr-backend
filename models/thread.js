@@ -21,9 +21,11 @@ module.exports = conn => {
   let shrinkToSpec = R.pick(keys);
 
   function getThreadMessages(id) {
-    return conn('messages')
-      .select('id', 'created_by', 'content', 'created_at', 'updated_at')
-      .where('thread_id', id) || [];
+    return (
+      conn('messages')
+        .select('id', 'created_by', 'content', 'created_at', 'updated_at')
+        .where('thread_id', id) || []
+    );
   }
 
   async function update(id, data) {
@@ -72,7 +74,7 @@ module.exports = conn => {
         });
     },
 
-    /* Convenience create method for grouping 
+    /* Convenience create method for grouping
      * Creates notes thread
     * */
     createForGrouping(trx, grouping_id) {

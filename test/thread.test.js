@@ -44,9 +44,8 @@ test('POST /tickets - create a new ticket creates ip thread and notes', async t 
   t.truthy(threads.length > 0);
   t.truthy(threads.filter(thread => thread.type === 'note').length > 0);
   t.truthy(
-    threads.filter(
-      thread => thread.type === 'ip' && thread.participant === id
-    ).length > 0
+    threads.filter(thread => thread.type === 'ip' && thread.participant === id)
+      .length > 0
   );
 });
 
@@ -96,20 +95,19 @@ test('GET /tickets/:ticket_id/threads - get threads for a ticket', async t => {
   );
 });
 
-
 test("GET /tickets/:ticket_id/threads - don't return inactive", async t => {
   const [thread] = await t.context
-        .conn('threads')
-        .select()
-        .whereNotNull('ticket_id')
-        .where('type', 'sp')
-        .limit(1);
+    .conn('threads')
+    .select()
+    .whereNotNull('ticket_id')
+    .where('type', 'sp')
+    .limit(1);
   const { ticket_id, participant } = thread;
 
   // Confirm that the admin reads three threads with an assigned SP
   const resBeforeUnassign = await request(t.context.app)
-        .get(`/tickets/${ticket_id}/threads`)
-        .set('Authorization', `Bearer ${t.context.admin_token}`);
+    .get(`/tickets/${ticket_id}/threads`)
+    .set('Authorization', `Bearer ${t.context.admin_token}`);
 
   t.is(resBeforeUnassign.status, 200);
   t.true(
@@ -123,8 +121,8 @@ test("GET /tickets/:ticket_id/threads - don't return inactive", async t => {
   await t.context.Ticket.unassignSpProfile(ticket_id, participant);
 
   const resAfterUnassign = await request(t.context.app)
-        .get(`/tickets/${ticket_id}/threads`)
-        .set('Authorization', `Bearer ${t.context.admin_token}`);
+    .get(`/tickets/${ticket_id}/threads`)
+    .set('Authorization', `Bearer ${t.context.admin_token}`);
 
   t.is(resAfterUnassign.status, 200);
   t.true(
@@ -133,7 +131,6 @@ test("GET /tickets/:ticket_id/threads - don't return inactive", async t => {
       resAfterUnassign.body.every(t => t.status === 'active')
   );
 });
-
 
 test('GET /groupings/:grouping_id/threads - get threads for a grouping', async t => {
   const [{ grouping_id }] = await t.context

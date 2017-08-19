@@ -29,8 +29,8 @@ if (process.argv.length > 3) {
 }
 
 // Set moments to iso format
-startTime = startTime.toISOString()
-endTime = endTime.toISOString()
+startTime = startTime.toISOString();
+endTime = endTime.toISOString();
 
 mailer
   .getEmails(startTime, endTime)

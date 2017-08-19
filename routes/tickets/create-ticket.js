@@ -8,7 +8,8 @@ let ipAllowedCreateKeys = [
   'date_of_incident',
   'incident_type',
   'description',
-  'steps_taken'
+  'steps_taken',
+  'title'
 ];
 
 module.exports = (Ticket, Email, IpProfile) => {
@@ -51,7 +52,6 @@ module.exports = (Ticket, Email, IpProfile) => {
       data.ticket_ip_name = data.ticket_ip_name || profile.name;
     }
 
-
     /* Save data to db */
     try {
       let id = await Ticket.create(data, req.user.profile.name);
@@ -65,7 +65,7 @@ module.exports = (Ticket, Email, IpProfile) => {
           ticket.ticket_ip_contact,
           ticket.ip_assigned_id,
           'ip',
-          "newTicket"
+          'newTicket'
         );
         // Notify Admin if ticket created by IP
       } else if (req.user.role === 'ip') {

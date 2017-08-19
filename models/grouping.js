@@ -12,6 +12,7 @@ module.exports = conn => {
       .select(
         'ticket_id',
         'grouping_id',
+        'title',
         'status',
         'created_by',
         'ticket_ip_contact',

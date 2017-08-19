@@ -24,7 +24,7 @@
     "eslint-plugin-prettier": "^2.0.1",
     "nyc": "^10.1.2",
     "openpgp": "^2.5.4",
-    "prettier": "^0.22.0",
+    "prettier": "^1.5.0",
     "supertest": "^3.0.0",
     "tap-xunit": "^1.7.0"
   },

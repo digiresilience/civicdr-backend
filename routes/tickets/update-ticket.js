@@ -43,7 +43,7 @@ module.exports = (Ticket, Email) => {
             ticket.ticket_ip_contact,
             ticket.ip_assigned_id,
             'ip',
-            "UpdatedTicket"
+            'UpdatedTicket'
           );
         }
         if (ticket.ticket_sp_contact && req.user.role !== 'sp') {

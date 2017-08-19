@@ -2,7 +2,10 @@ const R = require('ramda');
 const faker = require('faker');
 
 function pickset(arr, size) {
-  var shuffled = arr.slice(0), i = arr.length, temp, index;
+  var shuffled = arr.slice(0),
+    i = arr.length,
+    temp,
+    index;
   while (i--) {
     index = Math.floor((i + 1) * Math.random());
     temp = shuffled[index];
