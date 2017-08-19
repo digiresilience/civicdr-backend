@@ -1,5 +1,5 @@
 module.exports = {
-  secure_channels: ['PGP', 'Signal', 'Adium/Pidgin', 'Other'],
+  secure_channels: ['PGP', 'Signal', 'Off-the-Record Messaging (OTR)', 'Other'],
   services: [
     'Alerts and Warnings',
     'Incident Analysis',
