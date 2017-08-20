@@ -14,6 +14,7 @@ let userAllowedReadKeys = [
   'steps_taken',
   'created_at',
   'updated_at',
+  'title',
   'created_by',
   'ip_assigned_id',
   'sp_assigned_id',

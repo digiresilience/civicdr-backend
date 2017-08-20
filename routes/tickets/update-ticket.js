@@ -18,7 +18,6 @@ module.exports = (Ticket, Email) => {
   return async (req, res) => {
     /* TODO: validate input */
     let data = req.body;
-
     let id = req.params.id;
 
     /* If the updating user is an IP or SP
@@ -31,19 +30,31 @@ module.exports = (Ticket, Email) => {
       data = R.pick(spAllowedUpdateKeys, data);
     }
 
-    /* Save data to  db */
     try {
-      await Ticket.update(id, data, req.user.profile.name);
+      let ticketChanged;
+      /* Check if data has changed */
+      let [oldData] = await Ticket.findById(id);
+      if (typeof oldData === 'undefined') {
+        throw new RecordNotFound('ticket does not exist');
+      }
+      // Check if any returned data fields are different
+      for (field in data) {
+        if (data[field] != oldData[field]) {
+          ticketChanged = true;
+        }
+      }
 
-      // if status was updated, email IP/SP
+      /* Save data to  db */
+      await Ticket.update(id, data, req.user.profile.name);
+      let [ticket] = await Ticket.findById(id);
+      // if Status updated, email IP and SP
       if (has(data, 'status')) {
-        let [ticket] = await Ticket.findById(id);
         if (ticket.ticket_ip_contact && req.user.role !== 'ip') {
           await Email.notify(
             ticket.ticket_ip_contact,
             ticket.ip_assigned_id,
             'ip',
-            'UpdatedTicket'
+            'newStatus'
           );
         }
         if (ticket.ticket_sp_contact && req.user.role !== 'sp') {
@@ -51,14 +62,37 @@ module.exports = (Ticket, Email) => {
             ticket.ticket_sp_contact,
             ticket.sp_assigned_id,
             'sp',
-            'UpdatedTicket'
+            'newStatus'
           );
         }
-        if (req.user.role !== 'admin') {
-          await Email.notifyAdmin('UpdatedTicket');
+        // if Ticket updated, email other parties
+        // Will only show status update or data update for a single ticket
+      } else {
+        if (ticketChanged == true) {
+          if (ticket.ticket_ip_contact && req.user.role !== 'ip') {
+            // IP
+            await Email.notify(
+              ticket.ticket_ip_contact,
+              ticket.ip_assigned_id,
+              'ip',
+              'UpdatedTicket'
+            );
+          }
+          if (ticket.ticket_sp_contact && req.user.role !== 'sp') {
+            // SP
+            await Email.notify(
+              ticket.ticket_sp_contact,
+              ticket.sp_assigned_id,
+              'sp',
+              'UpdatedTicket'
+            );
+          }
+          // Admin
+          if (req.user.role !== 'admin') {
+            await Email.notifyAdmin('UpdatedTicket');
+          }
         }
       }
-
       Ticket.updateRead(id, req.user);
       res.status(200).send('Success');
     } catch (e) {

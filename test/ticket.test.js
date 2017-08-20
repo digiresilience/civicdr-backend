@@ -18,6 +18,7 @@ const prepareTicketData = async context => {
     status: 'ready',
     description: 'bad things',
     date_of_incident: moment(),
+    title: 'This ticket',
     ticket_ip_name: 'Alex',
     ticket_ip_contact: 'alex@asdf.org',
     steps_taken: 'tried everything',
