@@ -13,6 +13,11 @@ module.exports = (SpProfile, userAllowedKeys, Email) => {
         data = R.pick(userAllowedKeys, data);
       }
 
+      /* Null rating becomes a rating of 3 */
+      if (typeof data.rating !== 'undefined' && req.user.role === 'admin') {
+        data.rating = 3;
+      }
+
       /* Save data to  db */
       try {
         let id = await SpProfile.create(data, req.user);
@@ -52,6 +57,11 @@ module.exports = (SpProfile, userAllowedKeys, Email) => {
       let data = req.body;
       if (req.user.role === 'sp') {
         data = R.pick(userAllowedKeys, data);
+      }
+
+      /* Null rating becomes a rating of 3 on first edit*/
+      if (typeof data.rating !== 'undefined' && req.user.role === 'admin') {
+        data.rating = 3;
       }
 
       let id = req.params.id;
