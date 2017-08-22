@@ -16,7 +16,8 @@ const spAllowedKeys = [
   'pgp_key',
   'start_time',
   'per_week_availability',
-  'email_notification'
+  'email_notification',
+  'code_of_practice'
 ];
 
 const ipAllowedKeys = [
@@ -31,7 +32,9 @@ const ipAllowedKeys = [
   'secure_channels',
   'languages',
   'internal_level',
-  'email_notification'
+  'email_notification',
+  'partner_agreement',
+  'code_of_practice'
 ];
 
 module.exports = conn => {

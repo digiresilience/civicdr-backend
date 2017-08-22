@@ -47,7 +47,8 @@ module.exports = conn => {
     'per_week_availability',
     'created_at',
     'updated_at',
-    'email_notification'
+    'email_notification',
+    'code_of_practice'
   ];
 
   let shrinkToSpec = R.pick(keys);

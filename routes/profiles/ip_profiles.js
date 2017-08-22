@@ -56,6 +56,17 @@ module.exports = (IpProfile, userAllowedKeys, Email) => {
 
       let id = req.params.id;
 
+      /* Don't allow changing agreement after agreed */
+      let [ipProfile] = await IpProfile.findById(id);
+      if (defined(ipProfile)) {
+        if (ipProfile.partner_agreement === true) {
+          data.partner_agreement = true;
+        }
+        if (ipProfile.code_of_practice === true) {
+          data.code_of_practice = true;
+        }
+      }
+
       /* Save data to db */
       try {
         await IpProfile.update(id, data, req.user);

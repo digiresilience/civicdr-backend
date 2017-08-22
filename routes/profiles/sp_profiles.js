@@ -66,6 +66,14 @@ module.exports = (SpProfile, userAllowedKeys, Email) => {
 
       let id = req.params.id;
 
+      /* Don't allow rescind code of practice after agreed */
+      let [spProfile] = await SpProfile.findById(id);
+      if (defined(spProfile)) {
+        if (spProfile.code_of_practice === true) {
+          data.code_of_practice = true;
+        }
+      }
+
       /* Save data to db */
       try {
         await SpProfile.update(id, data, req.user);
