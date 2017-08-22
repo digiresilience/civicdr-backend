@@ -39,7 +39,7 @@ module.exports.init = function(opts) {
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader(
       'Strict-Transport-Security',
-      'max-age=63072000; includeSubdomains; preload'
+      'max-age=63072000; includeSubdomains'
     );
     res.setHeader('X-XSS-Protection', '1; mode=block');
     next();
@@ -80,6 +80,7 @@ module.exports.init = function(opts) {
   const profiles = require('./routes/profiles')(client);
 
   /* All routes require a token*/
+  /* Checking Auth0 tokens occurs here */
   app.use(jwt({ secret: process.env.JWT_SECRET || opts.secret }));
   app.use(function(err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
