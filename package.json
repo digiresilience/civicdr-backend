@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "Backend for CiviCDR",
   "main": "index.js",
-  "repository": "git@github.com:ASL-19/civicdr-backend.git",
-  "author": "CiviCDR",
+  "repository": "git@github.com:digiresilience/civicdr-backend.git",
+  "author": "digiresilience",
   "license": "MIT",
   "scripts": {
     "start": "npm run web",
@@ -53,6 +53,6 @@
     "xtend": "^4.0.1"
   },
   "engines": {
-    "node": "7.10.1"
+    "node": "8.x"
   }
 }
