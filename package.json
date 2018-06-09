@@ -36,7 +36,7 @@
     "dotenv": "^4.0.0",
     "express": "^4.15.2",
     "express-boom": "^2.0.0",
-    "express-jwt": "^5.1.0",
+    "express-jwt": "^5.3.1",
     "faker": "^4.1.0",
     "has": "^1.0.1",
     "knex": "^0.12.7",
