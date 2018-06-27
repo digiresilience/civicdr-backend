@@ -50,8 +50,7 @@ module.exports = R.curry((conn, logger, ability) => {
       return next();
     }
     if (req.user) {
-      req.user.roles = req.user['https://cdr.example.com/roles'] || [];
-      req.user.roles = req.user.roles || [];
+      req.user.roles = req.user['https://digiresilience.org/link/roles'] || [];
       if (R.contains('admin', req.user.roles)) {
         // Admin role can do everything
         req.user.profile = { id: 1, name: 'Admin' };
